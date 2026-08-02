@@ -73,8 +73,8 @@ The platform demonstrates the complete DevOps lifecycle, including:
                           ▼
                       GitLab Runner
                           │
-                          ├── SonarQube Scan
                           ├── Build Docker Image
+                          ├── SonarQube Scan
                           ├── Push Image → Harbor
                           └── Deploy → Kubernetes
                                            │
