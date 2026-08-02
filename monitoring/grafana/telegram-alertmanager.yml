@@ -1,0 +1,41 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: telegram-alerts
+  namespace: monitoring
+  labels:
+    alertmanagerConfig: telegram-alerts
+spec:
+  route:
+    receiver: telegram
+    matchers:
+    - name: team
+      value: shopnow
+      matchType: "="
+    groupBy:
+      - alertname
+      - severity
+    groupWait: 10s
+    groupInterval: 5m
+    repeatInterval: 1h
+
+  receivers:
+    - name: telegram
+      telegramConfigs:
+        - botToken:
+            name: telegram-bot
+            key: bot-token
+          chatID: -5206491006
+          sendResolved: true
+          parseMode: HTML
+          message: |-
+            🚨 <b>{{ .Status | toUpper }}</b>
+
+            <b>Alert:</b> {{ .CommonLabels.alertname }}
+            <b>Severity:</b> {{ .CommonLabels.severity }}
+
+            {{ range .Alerts }}
+            <b>Node:</b> {{ .Labels.instance }} ({{ .Labels.nodename }})
+            <b>Summary:</b> {{ .Annotations.summary }}
+            <b>Description:</b> {{ .Annotations.description }}
+            {{ end }}
