@@ -1,18 +1,20 @@
 # ShopNow DevOps Platform
 
-A production-like DevOps platform built to simulate a real-world software delivery workflow using Kubernetes, GitLab CI/CD, Harbor, Prometheus, Grafana, ELK Stack, and SonarQube.
+A production-like DevOps platform built to simulate a real-world software delivery workflow using Kubernetes, Helm, GitLab CI/CD, Vault, Harbor, Prometheus, Grafana, ELK Stack, and SonarQube.
 
 This project was designed as a personal hands-on lab to practice deploying, operating and troubleshooting a cloud-native microservices platform from source code to production.
 
 ---
 
-# 📌 Overview
+# Overview
 
 The platform demonstrates the complete DevOps lifecycle, including:
 
 - Kubernetes-based microservices deployment
+- Helm-based application deployment
 - GitLab CI/CD automation
 - Private container registry with Harbor
+- Secrets management using HashiCorp Vault
 - Code quality analysis using SonarQube
 - Centralized monitoring with Prometheus & Grafana
 - Centralized logging using ELK Stack
@@ -57,31 +59,30 @@ The platform demonstrates the complete DevOps lifecycle, including:
 │                               Kibana                                       │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
+```
 
-
-                    Git Push
-                       │
-                       ▼
-                 GitLab VM
-                       │
-                 Trigger Pipeline
-                       │
-                       ▼
-                GitLab Runner
-                       │
-                 SonarQube Scan
-                       │
-                 Build Docker Image
-                       │
-                       ▼
-                 Harbor Registry
-                       │
-                 Pull Image
-                       │
-                       ▼
-              Kubernetes Deployment
+# CI/CD Process
+```text
+                      Developer
+                          │
+                      Git Push
+                          │
+                          ▼
+                      GitLab
+                          │
+                          ▼
+                      GitLab Runner
+                          │
+                          ├── SonarQube Scan
+                          ├── Build Docker Image
+                          ├── Push Image → Harbor
+                          └── Deploy → Kubernetes
+                                           │
+                                           ▼
+                                   ShopNow Platform
 
 ```
+
 # Project screenshots
 
 ## GitLab
