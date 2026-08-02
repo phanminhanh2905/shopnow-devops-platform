@@ -1,4 +1,4 @@
-## ShopNow DevOps Platform
+# ShopNow DevOps Platform
 
 A production-like DevOps platform built to simulate a real-world software delivery workflow using Kubernetes, GitLab CI/CD, Harbor, Prometheus, Grafana, ELK Stack, and SonarQube.
 
@@ -6,7 +6,7 @@ This project was designed as a personal hands-on lab to practice deploying, oper
 
 ---
 
-## 📌 Overview
+# 📌 Overview
 
 The platform demonstrates the complete DevOps lifecycle, including:
 
@@ -18,7 +18,7 @@ The platform demonstrates the complete DevOps lifecycle, including:
 - Centralized logging using ELK Stack
 - NGINX Ingress and Kong API Gateway
 
-## Architecture Overview
+# Architecture Overview
 
 ```text
                                       Internet
@@ -82,9 +82,9 @@ The platform demonstrates the complete DevOps lifecycle, including:
               Kubernetes Deployment
 
 ```
-## Project screenshots
+# Project screenshots
 
-# GitLab
+## GitLab
 
 | Dashboard | Pipeline |
 |-----------|----------|
@@ -96,7 +96,7 @@ The platform demonstrates the complete DevOps lifecycle, including:
 
 ---
 
-# Harbor
+## Harbor
 
 ![](docs/screenshot/harbor-shopnow-project.png)
 
@@ -114,19 +114,19 @@ Prometheus Alerts
 
 ---
 
-# Logging
-
-> Kibana dashboard screenshot
-
----
-
-# Rancher
+## Rancher
 
 | Cluster | Workloads |
 |---------|-----------|
 | ![](docs/screenshot/rancher-cluster-overview.png) | ![](docs/screenshot/rancher-workloads.png) |
 
-## Future Improvements
+## Vault
+
+| Secret KV | Policy |
+|---------|-----------|
+| ![](docs/screenshot/vault-secret-kv.png) | ![](docs/screenshot/vault-shopnow-policy.png) |
+
+# Future Improvements
 
 - Terraform provisioning
 - ArgoCD GitOps deployment
