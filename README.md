@@ -33,7 +33,7 @@
 │  ────────────────             ─────────────             ─────              │
 │  Prometheus                  Filebeat                 GitLab Runner        │
 │  Grafana                     Logstash                                      │
-│  Alert manager                Elasticsearch                                 │
+│  Alert manager                Elasticsearch                                │
 │                               Kibana                                       │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
