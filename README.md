@@ -1,4 +1,4 @@
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ```text
                                       Internet
@@ -21,20 +21,20 @@
 │  │      ▼                                                               │  │
 │  │  API Gateway                                                         │  │
 │  │      │                                                               │  │
-│  │  ┌───┴───────────────┐                                                │  │
-│  │  │                   │                                                │  │
-│  │ Discovery        Product Service                                      │  │
-│  │ User Service     Cart Service                                         │  │
-│  │                   │                                                    │  │
-│  │              PostgreSQL                                                │  │
+│  │  ┌───┴───────────────┐                                               │  │
+│  │  │                   │                                               │  │
+│  │ Discovery        Product Service                                     │  │
+│  │ User Service     Cart Service                                        │  │
+│  │                   │                                                  │  │
+│  │              PostgreSQL                                              │  │
 │  └──────────────────────────────────────────────────────────────────────┘  │
 │                                                                            │
 │  Monitoring Stack             Logging Stack             CI/CD              │
 │  ────────────────             ─────────────             ─────              │
 │  Prometheus                  Filebeat                 GitLab Runner        │
-│  Grafana                     Logstash                                     │
-│  Alertmanager                Elasticsearch                               │
-│                               Kibana                                      │
+│  Grafana                     Logstash                                      │
+│  Alert manager                Elasticsearch                                 │
+│                               Kibana                                       │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
 
