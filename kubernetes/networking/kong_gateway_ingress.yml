@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kong-manager-ingress
+  namespace: kong
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kong-manager.pma-server.site
+      http:
+        paths:
+          - backend:
+              service:
+                name: gw-kong-manager
+                port:
+                  number: 8002
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kong-admin-ingress
+  namespace: kong
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kong-admin.pma-server.site
+      http:
+        paths:
+          - backend:
+              service:
+                name: gw-kong-admin
+                port:
+                  number: 8001
+            path: /
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kong-proxy-ingress
+  namespace: kong
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: gw.pma-server.site
+      http:
+        paths:
+          - backend:
+              service:
+                name: gw-kong-proxy
+                port:
+                  number: 8000
+            path: /
+            pathType: Prefix
