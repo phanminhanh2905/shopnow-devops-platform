@@ -1,0 +1,84 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pma-node-alerts
+  namespace: monitoring
+  labels: 
+    release: pmamonitor
+
+spec:
+  groups:
+  - name: pma.node.rules
+    rules:
+
+    - alert: NodeHighCPU
+      expr: |
+        (
+          100 * (
+            1 - avg by(instance) (
+              rate(node_cpu_seconds_total{mode="idle"}[5m])
+            )
+          )
+        )
+        * on(instance) group_left(nodename)
+        node_uname_info
+        > 80
+      for: 5m
+      labels:
+        severity: warning
+        team: shopnow
+      annotations:
+        summary: "High CPU usage on {{ $labels.nodename }}"
+        description: "CPU usage has exceeded 80% for 5 minutes. Current value: {{ $value }}%"
+
+    - alert: NodeHighMemory
+      expr: |
+        (
+          100 * (
+            1 -
+            (
+              node_memory_MemAvailable_bytes
+              /
+              node_memory_MemTotal_bytes
+            )
+          )
+        )
+        * on(instance) group_left(nodename)
+        node_uname_info
+        > 85
+      for: 5m
+      labels:
+        severity: warning
+        team: shopnow
+      annotations:
+        summary: "High memory usage on {{ $labels.nodename }}"
+        description: "Memory usage has exceeded 85% for 5 minutes. Current value: {{ $value }}%"
+
+    - alert: NodeDiskHigh
+      expr: |
+        (
+          100 * (
+            1 -
+            (
+              node_filesystem_avail_bytes{
+                mountpoint="/",
+                fstype!~"tmpfs|overlay|squashfs"
+              }
+              /
+              node_filesystem_size_bytes{
+                mountpoint="/",
+                fstype!~"tmpfs|overlay|squashfs"
+              }
+            )
+          )
+        )
+        * on(instance) group_left(nodename)
+        node_uname_info
+        > 85
+      for: 5m
+      labels:
+        severity: warning
+        team: shopnow
+      annotations:
+        summary: "High disk usage on {{ $labels.nodename }}"
+        description: "Root disk usage has exceeded 85% for 5 minutes. Current value: {{ $value }}%"
