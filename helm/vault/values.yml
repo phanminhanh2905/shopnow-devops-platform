@@ -1,0 +1,9 @@
+server:
+  dataStorage:
+    enabled: true
+    size: 10Gi
+    storageClass: "glusterfs-storage"
+    accessMode: ReadWriteOnce
+    selector:
+      matchLabels:
+        app: vault
