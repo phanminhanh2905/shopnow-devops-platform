@@ -25,7 +25,6 @@ The platform demonstrates the complete DevOps lifecycle, including:
 ```text
                                       Internet
                                           │
-                                   Cloudflare DNS
                                   (*.pma-server.site)
                                           │
                                           ▼
