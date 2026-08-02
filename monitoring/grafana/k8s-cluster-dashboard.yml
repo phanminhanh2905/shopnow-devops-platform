@@ -1,0 +1,1030 @@
+apiVersion: dashboard.grafana.app/v2
+kind: Dashboard
+metadata:
+  name: adgnrls
+  namespace: default
+  uid: 3273bdc7-2d65-4e12-9540-fc606b5b6f03
+  resourceVersion: '1784999722505007'
+  generation: 59
+  creationTimestamp: '2026-07-24T17:05:47Z'
+  labels:
+    grafana.app/deprecatedInternalID: '37959497715712'
+  annotations:
+    grafana.app/createdBy: user:cfszyt2bi4hkwa
+    grafana.app/folder: eft3ezjz1utxcf
+    grafana.app/saved-from-ui: Grafana v13.1.1 (e784b7782a)
+    grafana.app/updatedBy: user:cfszyt2bi4hkwa
+    grafana.app/updatedTimestamp: '2026-07-25T17:15:22Z'
+    grafana.app/folderTitle: ShopNow
+    grafana.app/folderUrl: /dashboards/f/eft3ezjz1utxcf/shopnow
+spec:
+  annotations:
+    - kind: AnnotationQuery
+      spec:
+        query:
+          kind: DataQuery
+          group: grafana
+          version: v0
+          datasource:
+            name: '-- Grafana --'
+          spec: {}
+        enable: true
+        hide: true
+        iconColor: rgba(0, 211, 255, 1)
+        name: Annotations & Alerts
+        builtIn: true
+  cursorSync: 'Off'
+  description: |-
+    1. Cluster Overview
+    2. Node Health
+    3. Kubernetes
+  editable: true
+  elements:
+    panel-1:
+      kind: Panel
+      spec:
+        id: 1
+        title: Ready Nodes
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      exemplar: false
+                      expr: >-
+                        sum(kube_node_status_condition{condition="Ready",
+                        status="true"})
+                      format: table
+                      instant: false
+                      legendFormat: __auto
+                      range: true
+                  refId: Get Node status as ready
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: stat
+          version: 13.1.1
+          spec:
+            options:
+              colorMode: value
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 1
+                      color: red
+                    - value: 2
+                      color: '#EAB839'
+                    - value: 3
+                      color: green
+                color:
+                  mode: thresholds
+                  fixedColor: '#ad46ff'
+              overrides: []
+    panel-10:
+      kind: Panel
+      spec:
+        id: 10
+        title: IO Wait
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "(\r\n100 *\r\navg by(instance)(\r\nrate(node_cpu_seconds_total{mode=\"iowait\"}[5m])\r\n)\r\n)\r\n* on(instance) group_left(node)\r\nlabel_replace(\r\n  kube_node_info,\r\n  \"instance\",\"$1:9100\",\r\n  \"internal_ip\",\"(.*)\"\r\n)"
+                      interval: ''
+                      legendFormat: '{{node}}'
+                      range: true
+                  refId: Get CPU usage
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: gauge
+          version: 13.1.1
+          spec:
+            options:
+              barShape: flat
+              barWidthFactor: 0.3
+              effects:
+                barGlow: false
+                centerGlow: false
+                gradient: true
+              endpointMarker: point
+              minVizHeight: 75
+              minVizWidth: 75
+              orientation: auto
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              segmentCount: 1
+              segmentSpacing: 0.3
+              shape: gauge
+              showThresholdLabels: false
+              showThresholdMarkers: false
+              sizing: auto
+              sparkline: true
+              textMode: auto
+            fieldConfig:
+              defaults:
+                unit: percent
+                thresholds:
+                  mode: percentage
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 60
+                      color: '#EAB839'
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+              overrides: []
+    panel-11:
+      kind: Panel
+      spec:
+        id: 11
+        title: Running Pods by Namespace
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "count by(namespace)(\r\n    kube_pod_status_phase{phase=\"Running\"} == 1\r\n)"
+                      legendFormat: __auto
+                      range: true
+                  refId: A
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: stat
+          version: 13.1.1
+          spec:
+            options:
+              colorMode: value
+              graphMode: area
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+              overrides: []
+    panel-12:
+      kind: Panel
+      spec:
+        id: 12
+        title: Top 10 CPU Pods
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      exemplar: false
+                      expr: "topk(\r\n  10,\r\n  sum by (namespace, pod) (\r\n    rate(container_cpu_usage_seconds_total{\r\n      container!=\"\",\r\n      container!=\"POD\",\r\n      pod!=\"\"\r\n    }[5m])\r\n  )\r\n) * 1000"
+                      instant: true
+                      legendFormat: '{{namespace}} / {{pod}}'
+                      range: false
+                  refId: A
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: bargauge
+          version: 13.1.1
+          spec:
+            options:
+              displayMode: basic
+              legend:
+                calcs: []
+                displayMode: list
+                overflow: ellipsis
+                placement: bottom
+                showLegend: false
+              maxVizHeight: 300
+              minVizHeight: 16
+              minVizWidth: 8
+              namePlacement: auto
+              orientation: horizontal
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showUnfilled: true
+              sizing: auto
+              valueMode: color
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 80
+                      color: red
+                color:
+                  mode: continuous-GrYlRd
+              overrides: []
+    panel-13:
+      kind: Panel
+      spec:
+        id: 13
+        title: Top 10 Memory Pods
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      exemplar: false
+                      expr: "topk(\r\n  10,\r\n  sum by (namespace, pod) (\r\n    container_memory_working_set_bytes{\r\n      container!=\"\",\r\n      container!=\"POD\",\r\n      pod!=\"\"\r\n    }\r\n  ) / 1024 / 1024\r\n)"
+                      instant: true
+                      legendFormat: '{{namespace}} / {{pod}}'
+                      range: false
+                  refId: A
+                  hidden: false
+            transformations:
+              - kind: Transformation
+                group: sortBy
+                spec:
+                  options:
+                    fields: {}
+                    sort:
+                      - field: $filter0
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: bargauge
+          version: 13.1.1
+          spec:
+            options:
+              displayMode: basic
+              legend:
+                calcs: []
+                displayMode: list
+                overflow: ellipsis
+                placement: bottom
+                showLegend: false
+              maxVizHeight: 300
+              minVizHeight: 16
+              minVizWidth: 8
+              namePlacement: auto
+              orientation: horizontal
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showUnfilled: true
+              sizing: auto
+              valueMode: color
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 80
+                      color: red
+                color:
+                  mode: continuous-GrYlRd
+              overrides: []
+    panel-2:
+      kind: Panel
+      spec:
+        id: 2
+        title: Running Pods
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: builder
+                      expr: count(kube_pod_status_phase{phase="Running"}==1)
+                      legendFormat: __auto
+                      range: true
+                  refId: Get Running Pods
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: stat
+          version: 13.1.1
+          spec:
+            options:
+              colorMode: value
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                color:
+                  mode: thresholds
+                  fixedColor: '#ad46ff'
+              overrides: []
+    panel-4:
+      kind: Panel
+      spec:
+        id: 4
+        title: Pending Pods
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "count(\r\nkube_pod_status_phase{\r\nphase=\"Pending\"\r\n} == 1\r\n) or vector(0)"
+                      legendFormat: __auto
+                      range: true
+                  refId: Get Pending Pods
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: stat
+          version: 13.1.1
+          spec:
+            options:
+              colorMode: value
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+                  fixedColor: '#ad46ff'
+              overrides: []
+    panel-5:
+      kind: Panel
+      spec:
+        id: 5
+        title: 'Restarts24h '
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "sum(\r\n    increase(\r\n        kube_pod_container_status_restarts_total[24h]\r\n    )\r\n)"
+                      legendFormat: __auto
+                      range: true
+                  refId: Get Pod Restarts24h
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: stat
+          version: 13.1.1
+          spec:
+            options:
+              colorMode: value
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+                  fixedColor: '#ad46ff'
+              overrides: []
+    panel-6:
+      kind: Panel
+      spec:
+        id: 6
+        title: Failed Pods
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "count(\r\nkube_pod_status_phase{\r\nphase=\"Failed\"\r\n} == 1\r\n) or vector(0)"
+                      legendFormat: __auto
+                      range: true
+                  refId: Get Failed Pods
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: stat
+          version: 13.1.1
+          spec:
+            options:
+              colorMode: value
+              graphMode: none
+              justifyMode: auto
+              orientation: auto
+              percentChangeColorMode: standard
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              showPercentChange: false
+              textMode: auto
+              wideLayout: true
+            fieldConfig:
+              defaults:
+                thresholds:
+                  mode: absolute
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+                  fixedColor: '#ad46ff'
+              overrides: []
+    panel-7:
+      kind: Panel
+      spec:
+        id: 7
+        title: CPU Usage
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "(\r\n100 * (\r\n  1 -\r\n  avg by(instance)(\r\n    rate(node_cpu_seconds_total{mode=\"idle\"}[5m])\r\n  )\r\n)\r\n)\r\n* on(instance) group_left(node)\r\nlabel_replace(\r\n  kube_node_info,\r\n  \"instance\", \"$1:9100\",\r\n  \"internal_ip\", \"(.*)\"\r\n)"
+                      interval: ''
+                      legendFormat: '{{node}}'
+                      range: true
+                  refId: Get CPU usage
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: gauge
+          version: 13.1.1
+          spec:
+            options:
+              barShape: flat
+              barWidthFactor: 0.3
+              effects:
+                barGlow: false
+                centerGlow: false
+                gradient: true
+              endpointMarker: point
+              minVizHeight: 75
+              minVizWidth: 75
+              orientation: auto
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              segmentCount: 1
+              segmentSpacing: 0.3
+              shape: gauge
+              showThresholdLabels: false
+              showThresholdMarkers: false
+              sizing: auto
+              sparkline: true
+              textMode: auto
+            fieldConfig:
+              defaults:
+                unit: percent
+                min: 0
+                max: 100
+                thresholds:
+                  mode: percentage
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 60
+                      color: '#EAB839'
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+              overrides: []
+    panel-8:
+      kind: Panel
+      spec:
+        id: 8
+        title: Disk Usage
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "(\r\n100 -\r\n(\r\nnode_filesystem_avail_bytes{mountpoint=\"/\",fstype!=\"\"}\r\n/\r\nnode_filesystem_size_bytes{mountpoint=\"/\",fstype!=\"\"}\r\n*100\r\n)\r\n)\r\n* on(instance) group_left(node)\r\nlabel_replace(\r\n  kube_node_info,\r\n  \"instance\",\"$1:9100\",\r\n  \"internal_ip\",\"(.*)\"\r\n)"
+                      interval: ''
+                      legendFormat: '{{node}}'
+                      range: true
+                  refId: Get CPU usage
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: gauge
+          version: 13.1.1
+          spec:
+            options:
+              barShape: flat
+              barWidthFactor: 0.3
+              effects:
+                barGlow: false
+                centerGlow: false
+                gradient: true
+              endpointMarker: point
+              minVizHeight: 75
+              minVizWidth: 75
+              orientation: auto
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              segmentCount: 1
+              segmentSpacing: 0.3
+              shape: gauge
+              showThresholdLabels: false
+              showThresholdMarkers: false
+              sizing: auto
+              sparkline: true
+              textMode: auto
+            fieldConfig:
+              defaults:
+                unit: percent
+                min: 0
+                max: 100
+                thresholds:
+                  mode: percentage
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 60
+                      color: '#EAB839'
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+              overrides: []
+    panel-9:
+      kind: Panel
+      spec:
+        id: 9
+        title: Memory Usage
+        description: ''
+        links: []
+        data:
+          kind: QueryGroup
+          spec:
+            queries:
+              - kind: PanelQuery
+                spec:
+                  query:
+                    kind: DataQuery
+                    group: prometheus
+                    version: v0
+                    datasource:
+                      name: prometheus
+                    spec:
+                      editorMode: code
+                      expr: "(\r\n100 *\r\n(\r\n1 -\r\n(\r\nnode_memory_MemAvailable_bytes\r\n/\r\nnode_memory_MemTotal_bytes\r\n)\r\n)\r\n)\r\n* on(instance) group_left(node)\r\nlabel_replace(\r\n  kube_node_info,\r\n  \"instance\", \"$1:9100\",\r\n  \"internal_ip\", \"(.*)\"\r\n)"
+                      interval: ''
+                      legendFormat: '{{node}}'
+                      range: true
+                  refId: Get CPU usage
+                  hidden: false
+            transformations: []
+            queryOptions: {}
+        vizConfig:
+          kind: VizConfig
+          group: gauge
+          version: 13.1.1
+          spec:
+            options:
+              barShape: flat
+              barWidthFactor: 0.3
+              effects:
+                barGlow: false
+                centerGlow: false
+                gradient: true
+              endpointMarker: point
+              minVizHeight: 75
+              minVizWidth: 75
+              orientation: auto
+              reduceOptions:
+                calcs:
+                  - lastNotNull
+                fields: ''
+                values: false
+              segmentCount: 1
+              segmentSpacing: 0.3
+              shape: gauge
+              showThresholdLabels: false
+              showThresholdMarkers: false
+              sizing: auto
+              sparkline: true
+              textMode: auto
+            fieldConfig:
+              defaults:
+                unit: percent
+                thresholds:
+                  mode: percentage
+                  steps:
+                    - value: 0
+                      color: green
+                    - value: 60
+                      color: '#EAB839'
+                    - value: 80
+                      color: red
+                color:
+                  mode: thresholds
+              overrides: []
+  layout:
+    kind: RowsLayout
+    spec:
+      rows:
+        - kind: RowsLayoutRow
+          spec:
+            title: 1. Cluster Overview
+            collapse: false
+            layout:
+              kind: AutoGridLayout
+              spec:
+                maxColumnCount: 5
+                columnWidthMode: narrow
+                rowHeightMode: custom
+                rowHeight: 100
+                items:
+                  - kind: AutoGridLayoutItem
+                    spec:
+                      element:
+                        kind: ElementReference
+                        name: panel-1
+                  - kind: AutoGridLayoutItem
+                    spec:
+                      element:
+                        kind: ElementReference
+                        name: panel-2
+                  - kind: AutoGridLayoutItem
+                    spec:
+                      element:
+                        kind: ElementReference
+                        name: panel-4
+                  - kind: AutoGridLayoutItem
+                    spec:
+                      element:
+                        kind: ElementReference
+                        name: panel-6
+                  - kind: AutoGridLayoutItem
+                    spec:
+                      element:
+                        kind: ElementReference
+                        name: panel-5
+        - kind: RowsLayoutRow
+          spec:
+            title: 2. Node Health
+            collapse: true
+            layout:
+              kind: RowsLayout
+              spec:
+                rows:
+                  - kind: RowsLayoutRow
+                    spec:
+                      title: '%CPU & Memory'
+                      collapse: false
+                      layout:
+                        kind: AutoGridLayout
+                        spec:
+                          maxColumnCount: 2
+                          columnWidthMode: narrow
+                          rowHeightMode: custom
+                          rowHeight: 150
+                          items:
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-7
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-9
+                  - kind: RowsLayoutRow
+                    spec:
+                      title: '%Disk & IO Wait'
+                      collapse: false
+                      layout:
+                        kind: AutoGridLayout
+                        spec:
+                          maxColumnCount: 2
+                          columnWidthMode: narrow
+                          rowHeightMode: custom
+                          rowHeight: 150
+                          items:
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-8
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-10
+        - kind: RowsLayoutRow
+          spec:
+            title: 3. Kubernetes
+            collapse: false
+            layout:
+              kind: RowsLayout
+              spec:
+                rows:
+                  - kind: RowsLayoutRow
+                    spec:
+                      title: Pods per NS
+                      collapse: false
+                      layout:
+                        kind: AutoGridLayout
+                        spec:
+                          maxColumnCount: 1
+                          columnWidthMode: narrow
+                          rowHeightMode: short
+                          items:
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-11
+                  - kind: RowsLayoutRow
+                    spec:
+                      title: Resource usage
+                      collapse: false
+                      layout:
+                        kind: AutoGridLayout
+                        spec:
+                          maxColumnCount: 2
+                          columnWidthMode: narrow
+                          rowHeightMode: short
+                          items:
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-12
+                            - kind: AutoGridLayoutItem
+                              spec:
+                                element:
+                                  kind: ElementReference
+                                  name: panel-13
+  links: []
+  liveNow: false
+  preload: false
+  tags: []
+  timeSettings:
+    timezone: browser
+    from: now-3h
+    to: now
+    autoRefresh: ''
+    autoRefreshIntervals:
+      - 5s
+      - 10s
+      - 30s
+      - 1m
+      - 5m
+      - 15m
+      - 30m
+      - 1h
+      - 2h
+      - 1d
+    hideTimepicker: false
+    fiscalYearStartMonth: 0
+  title: Infrastructure Health (Cluster)
+  variables:
+    - kind: AdhocVariable
+      group: prometheus
+      datasource:
+        name: prometheus
+      spec:
+        name: filter0
+        baseFilters: []
+        filters: []
+        defaultKeys: []
+        hide: dontHide
+        skipUrlSync: false
+        allowCustomValue: true
+        enableGroupBy: false
+  preferences:
+    layout:
+      kind: AutoGridLayout
+      spec:
+        maxColumnCount: 3
+        columnWidthMode: standard
+        rowHeightMode: standard
+        items: []
