@@ -1,0 +1,45 @@
+namespace: kong
+
+ingressController:
+  enabled: true
+
+proxy:
+  type: ClusterIP
+  http:
+    enabled: true
+    servicePort: 8000
+  tls:
+    enabled: false
+
+admin:
+  enabled: true
+  type: ClusterIP
+
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+  ingress:
+    enabled: false
+
+env:
+  admin_gui_url: "http://kong-manager.pma-server.site"
+  admin_gui_api_url: "http://kong-admin.pma-server.site"
+
+  database: postgres
+  pg_database: kong
+  pg_user: kong
+  pg_password: 123456
+  pg_host: postgres.shopnow.svc.cluster.local
+
+manager:
+  enabled: true
+  type: ClusterIP
+  http:
+    enabled: true
+    servicePort: 8002
+    containerPort: 8002
+  tls:
+    enabled: false
+  ingress:
+    enabled: false
