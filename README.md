@@ -51,10 +51,10 @@ The platform demonstrates the complete DevOps lifecycle, including:
 │  │              PostgreSQL                                              │  │
 │  └──────────────────────────────────────────────────────────────────────┘  │
 │                                                                            │
-│  Monitoring Stack             Logging Stack             CI/CD              │
-│  ────────────────             ─────────────             ─────              │
-│  Prometheus                  Filebeat                 GitLab Runner        │
-│  Grafana                     Logstash                                      │
+│  Monitoring Stack             Logging Stack             CI/CD & Security   │
+│  ────────────────             ─────────────             ────────────────   │
+│  Prometheus                  Filebeat                   GitLab Runner      │
+│  Grafana                     Logstash                   Vault              │
 │  Alertmanager                Elasticsearch                                 │
 │                               Kibana                                       │
 │                                                                            │
