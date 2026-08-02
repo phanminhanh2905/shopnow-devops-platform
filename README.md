@@ -1,6 +1,6 @@
 ## ShopNow DevOps Platform
 
-A production-like DevOps platform built to simulate a real-world software delivery workflow using Kubernetes, GitLab CI/CD, Harbor, Prometheus, Grafana, ELK Stack, SonarQube and Telegram ChatOps.
+A production-like DevOps platform built to simulate a real-world software delivery workflow using Kubernetes, GitLab CI/CD, Harbor, Prometheus, Grafana, ELK Stack, and SonarQube.
 
 This project was designed as a personal hands-on lab to practice deploying, operating and troubleshooting a cloud-native microservices platform from source code to production.
 
@@ -16,7 +16,6 @@ The platform demonstrates the complete DevOps lifecycle, including:
 - Code quality analysis using SonarQube
 - Centralized monitoring with Prometheus & Grafana
 - Centralized logging using ELK Stack
-- Telegram ChatOps for remote operations
 - NGINX Ingress and Kong API Gateway
 
 ## Architecture Overview
@@ -82,37 +81,24 @@ The platform demonstrates the complete DevOps lifecycle, including:
                        ▼
               Kubernetes Deployment
 
-
-                  Telegram
-                      │
-                      ▼
-            Telegram ChatOps Bot
-              (Dev Server)
-                      │
-                 SSH Tunnel
-                      │
-                 kubectl
-                      │
-                      ▼
-             Kubernetes Cluster
 ```
-## Project Screenshots
+## Project screenshots
 
 # GitLab
 
 | Dashboard | Pipeline |
 |-----------|----------|
-| ![](docs/screenshots/gitlab-dashboard.png) | ![](docs/screenshots/gitlab-pipeline.png) |
+| ![](docs/screenshot/gitlab-dashboard.png) | ![](docs/screenshot/gitlab-pipeline.png) |
 
 | Projects | Repository |
 |----------|------------|
-| ![](docs/screenshots/gitlab-projects.png) | ![](docs/screenshots/gitlab-repo-userservice.png) |
+| ![](docs/screenshot/gitlab-projects.png) | ![](docs/screenshot/gitlab-repo-userservice.png) |
 
 ---
 
 # Harbor
 
-![](docs/screenshots/harbor-shopnow-project.png)
+![](docs/screenshot/harbor-shopnow-project.png)
 
 ---
 
@@ -120,11 +106,11 @@ The platform demonstrates the complete DevOps lifecycle, including:
 
 | Grafana | Prometheus |
 |---------|------------|
-| ![](docs/screenshots/grafana-dashboard.png) | ![](docs/screenshots/prometheus-targets.png) |
+| ![](docs/screenshot/grafana-dashboard.png) | ![](docs/screenshot/prometheus-targets.png) |
 
 Prometheus Alerts
 
-![](docs/screenshots/prometheus-alerts.png)
+![](docs/screenshot/prometheus-alerts.png)
 
 ---
 
@@ -138,7 +124,7 @@ Prometheus Alerts
 
 | Cluster | Workloads |
 |---------|-----------|
-| ![](docs/screenshots/rancher-cluster-overview.png) | ![](docs/screenshots/rancher-workloads.png) |
+| ![](docs/screenshot/rancher-cluster-overview.png) | ![](docs/screenshot/rancher-workloads.png) |
 
 ## Future Improvements
 
